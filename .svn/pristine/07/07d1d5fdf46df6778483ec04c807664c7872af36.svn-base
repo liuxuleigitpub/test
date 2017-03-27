@@ -1,0 +1,33 @@
+package com.dm.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.dm.entity.ChannelInfo;
+
+public interface ChannelInfoDao {
+	
+	public List<ChannelInfo> getChannelInfoList(@Param("userid")int userid);
+	
+	public List<Map<String, Object>> getChannelStatic(@Param("channelids")String channelids,
+			@Param("starttime")String starttime, @Param("endtime")String endtime);
+
+	public int getChannelInfoCount(@Param("userId")int userId);
+
+	public List<ChannelInfo> getChannelInfoByPage(@Param("startNum")int startNum, @Param("pageSize")int pageSize,
+			@Param("userId")int userId);
+
+	public int addChannelInfo(@Param("channelInfo")ChannelInfo channelInfo);
+
+	public List<Map<String, Object>> getAdminChannelStatic(@Param("channelids")String channelids,
+			@Param("starttime")String starttime, @Param("endtime")String endtime);
+
+	public List<Map<String, Object>> getKlChannelStatic(@Param("channelids")String channelids,
+			@Param("starttime")String starttime, @Param("endtime")String endtime);
+
+	public int getOrderlistCount(Map<String, Object> map);
+
+	public List<Map<String, Object>> getOrderlistByPage(Map<String, Object> map);
+}

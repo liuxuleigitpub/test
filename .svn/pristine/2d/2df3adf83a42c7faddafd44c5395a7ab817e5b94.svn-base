@@ -1,0 +1,55 @@
+package com.dm.service;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.dm.dao.UserInfoDao;
+import com.dm.entity.UserInfo;
+import com.dm.util.PageData;
+import com.dm.util.PageUtil;
+
+/**
+ * MvInfoService实现类
+ * 
+ * @author Administrator
+ *
+ */
+@Service("userInfoService")
+public class UserInfoService {
+
+	@Resource
+	private UserInfoDao userInfoDao;
+
+	public UserInfo getUserInfo(String username, String password) {
+		UserInfo userInfo = userInfoDao.getUserInfo(username, password);
+		return userInfo;
+	}
+	
+	public PageData<UserInfo> getUserInfoByPage(int pageNum, int pageSize, String userName,int usertype) {
+		PageData<UserInfo> pageData = new PageData<UserInfo>();
+		int count = userInfoDao.getUserInfoCount(userName,usertype);
+		if(count == 0){
+			return pageData;
+		}
+		int startNum = PageUtil.getStart(pageNum, pageSize);
+		List<UserInfo> list = userInfoDao.getUserInfoByPage(startNum, pageSize, userName,usertype);
+		int pageCount = PageUtil.getTotalPage(pageSize, count);
+		pageData.setList(list);
+		pageData.setPageCount(pageCount);
+		return pageData;
+	}
+
+	public int addUserInfo(UserInfo userInfo) {
+		return userInfoDao.addUserInfo(userInfo);
+	}
+
+	public int updateUserInfo(UserInfo userInfo) {
+		return userInfoDao.updateUserInfo(userInfo);
+	}
+	public int deleteUserInfo(UserInfo userInfo) {
+		return userInfoDao.deleteUserInfo(userInfo);
+	}
+}

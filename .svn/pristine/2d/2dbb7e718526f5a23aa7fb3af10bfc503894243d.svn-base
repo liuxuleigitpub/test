@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dm.dao.UserInfoDao">
+	<!-- 获取渠道信息 -->
+	<select id="getUserInfo" resultType="com.dm.entity.UserInfo">
+		select 
+			id, username, password, usertype, state, cnname 
+		from tbl_user_info 
+		where username=#{username} and password=#{password} limit 0, 1
+	</select>
+	<select id="getUserInfoCount" resultType="int">
+	select count(1) from tbl_user_info 
+	<where>
+			<if test="userName != null and userName != ''">
+				username like '%${userName}%'
+			</if>
+			<if test="usertype != null and usertype != 2">
+				and usertype like '%${usertype}%'
+			</if>
+		</where>
+	</select>
+	<select id="getUserInfoByPage" resultType="com.dm.entity.UserInfo">
+		select 
+			id, username, password, usertype, state, cnname  
+		from tbl_user_info 
+		<where>
+			<if test="userName != null and userName != ''">
+				username like '%${userName}%'
+			</if>
+			<if test="usertype != null and usertype != 2">
+				and usertype like '%${usertype}%'
+			</if>
+		</where>
+		limit #{startNum}, #{pageSize}
+	</select>
+	<insert id="addUserInfo" parameterType="com.dm.entity.UserInfo">
+		insert into tbl_user_info(username, password, usertype, cnname, state, createtime)
+		values(#{username}, #{password}, #{usertype}, #{cnname}, 1, now())
+	</insert>
+	
+	
+	<update id="updateUserInfo" parameterType="com.dm.entity.UserInfo">	
+		update  tbl_user_info
+		<set>
+			<if test="userInfo.username != null ">username=#{userInfo.username},</if>
+			<if test="userInfo.password != null ">password=#{userInfo.password},</if>
+			<if test="userInfo.usertype != null ">usertype=#{userInfo.usertype},</if>
+			<if test="userInfo.cnname != null ">cnname=#{userInfo.cnname},</if>
+		</set>
+		where id=#{userInfo.id}
+	</update>
+	
+	<delete id="deleteUserInfo">
+		delete from 
+		tbl_user_info
+		where id=#{userInfo.id}
+	</delete>
+	
+	<select id="getChannelUserCount" resultType="int">
+	select count(*) from tbl_user_info 
+	where id=#{id}
+	</select>
+	
+	<select id="getChannelUserByPage" resultType="com.dm.entity.UserInfo">
+	select 
+		username, password, usertype, state, cnname,id 
+		from tbl_user_info 
+		where id =#{userid}
+	</select>
+	
+	<select id="getChannelUserByPageList" resultType="com.dm.entity.UserInfo" >
+	select 
+		username, password, usertype, state, cnname,id
+		from tbl_user_info 
+    	where id in  
+    <foreach collection="id" item="item" index="index" open="(" separator="," close=")">  
+        #{item}  
+    </foreach>  
+	</select>
+	
+	<select id="getUserId" resultType="int">
+	select userid
+	from tbl_channel_user 
+		where chid=#{chid}
+	</select>
+	
+	<insert id="addUserByChannel" parameterType="com.dm.entity.UserInfo" useGeneratedKeys="true" keyProperty="userInfo.id">
+		insert into tbl_user_info(username, password, usertype, cnname, state, createtime)
+		values(#{userInfo.username}, #{userInfo.password}, #{userInfo.usertype}, #{userInfo.cnname}, 1, now())
+	</insert>
+	
+	<insert id="addUseridAndChid" parameterType="int">
+		insert into tbl_channel_user(userid, chid)
+		values(#{userid}, #{chid})
+	</insert>
+	
+	<update id="updateUserByChannel" parameterType="com.dm.entity.UserInfo">	
+		update  tbl_user_info
+		<set>
+			<if test="userInfo.username != null ">username=#{userInfo.username},</if>
+			<if test="userInfo.password != null ">password=#{userInfo.password},</if>
+			<if test="userInfo.usertype != null ">usertype=#{userInfo.usertype},</if>
+			<if test="userInfo.cnname != null ">cnname=#{userInfo.cnname},</if>
+		</set>
+		where id=#{userInfo.id}
+	</update>
+	
+	<delete id="deleteUserByChid">
+		delete from 
+		tbl_channel_user
+		where userid=#{userInfo.id}
+	</delete>
+
+</mapper>
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+package com.dm.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.dm.entity.UserInfo;
+
+public interface UserInfoDao {
+	
+	public UserInfo getUserInfo(@Param("username")String username, @Param("password")String password);
+
+	public int getUserInfoCount();
+
+	public List<UserInfo> getUserInfoByPage(@Param("startNum")int startNum, @Param("pageSize")int pageSize);
+
+	public int addUserInfo(UserInfo userInfo);
+
+	public int updateUserInfo(@Param("userInfo")UserInfo userInfo);
+	
+	public int deleteUserInfo(@Param("userInfo")UserInfo userInfo);
+	
+}

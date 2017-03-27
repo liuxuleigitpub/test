@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dm.dao.ChannelInfoDao">
+	<!-- 获取渠道信息 -->
+	<select id="getChannelInfoList" resultType="com.dm.entity.ChannelInfo">
+		select
+		id, userid, channelid, klxs, DATE_FORMAT(createtime,'%Y-%m-%d %H:%i:%s')
+		createtime
+		from tbl_channel_info
+		where userid=#{userid}
+	</select>
+	<select id="getChannelStatic" resultType="hashmap">
+		select
+		channelId,count(1) count,SUM(price) fee
+		from tbl_order
+		<where>
+			<if test=" channelids != null and channelids != ''">
+				channelId in ( ${channelids})
+			</if>
+			and orderstate = 1
+			and createtime &gt;=#{starttime} and createtime &lt;= #{endtime}
+		</where>
+		GROUP BY channelId
+	</select>
+	<select id="getAdminChannelStatic" resultType="hashmap">
+		select
+		channelId,count(1) count,SUM(price) fee
+		from tbl_order
+		<where>
+			orderstate >= 1
+			and createtime &gt;=#{starttime} and createtime &lt;= #{endtime}
+		</where>
+		GROUP BY channelId
+		order by SUM(price) desc
+	</select>
+	<select id="getKlChannelStatic" resultType="hashmap">
+		select
+		channelId,count(1) count,SUM(price) fee
+		from tbl_order
+		<where>
+			orderstate > 1
+			and createtime &gt;=#{starttime} and createtime &lt;= #{endtime}
+		</where>
+		GROUP BY channelId
+		order by SUM(price) desc
+	</select>
+	<select id="getChannelInfoByPage" resultType="com.dm.entity.ChannelInfo">
+		select
+		id, userid, channelid, klxs, DATE_FORMAT(createtime,'%Y-%m-%d %H:%i:%s')
+		createtime
+		from tbl_channel_info
+		where userid=#{userId}
+		limit #{startNum}, #{pageSize}
+	</select>
+	<select id="getChannelInfoCount" resultType="int">
+		select count(1) from
+		tbl_channel_info where userid=#{userId}
+	</select>
+	<insert id="addChannelInfo" parameterType="com.dm.entity.ChannelInfo">
+		insert into
+		tbl_channel_info(
+		userid, channelid, klxs, createtime
+		)
+		values(
+		#{channelInfo.userid},#{channelInfo.channelid},#{channelInfo.klxs},now()
+		)
+	</insert>
+	<select id="getOrderlistCount" resultType="int">
+		select count(1) from tbl_order
+		<where>
+			channelId = #{channelid} 
+			<if test="roleId !=0">
+			and orderstate = 1 
+			</if>
+			and createtime &gt;=#{starttime} 
+			and createtime &lt;= #{endtime} 
+		</where> 
+	</select>
+	<select id="getOrderlistByPage" resultType="hashmap">
+		select orderstate, orderId, orderChannel, price,
+		DATE_FORMAT(createtime,'%Y-%m-%d %H:%i:%s') createtime from tbl_order
+		<where>
+			channelId = #{channelid} 
+			<if test="roleId !=0">
+			and orderstate = 1 
+			</if>
+			and createtime &gt;=#{starttime} 
+			and createtime &lt;= #{endtime} 
+		</where> 
+		order by createtime asc
+		limit #{startNum}, #{pageSize}
+	</select>
+	
+	<update id="updateChannelInfo" parameterType="com.dm.entity.ChannelInfo">
+		update tbl_channel_info
+		<set>
+			<if test="channelInfo.klxs != null ">klxs=#{channelInfo.klxs},</if>
+		</set>
+		where channelid=#{channelInfo.channelid}
+
+	</update>
+	
+	<delete id="deleteChannelInfo">
+		delete from 
+		tbl_channel_info
+		where id=#{id}
+	</delete>
+
+</mapper>
+
+
+
+
+
+

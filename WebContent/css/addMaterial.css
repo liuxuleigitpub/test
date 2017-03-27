@@ -1,0 +1,85 @@
+.card_form {
+	background-image: url(../../source/image/bg-card.png);
+	background-repeat:no-repeat;
+	background-size:100% 100%;
+	width: 500px;
+	filter: none;
+	padding: 20px 0px 20px 0px;
+	margin: 0px 20px 20px 20px;
+	text-shadow: none;
+	font-family: "Microsoft YaHei";
+	font-size: 14px;  	
+	outline: none;
+	-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+	box-shadow: none !important;
+	-webkit-border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	border-radius: 0 !important;
+}
+.card_form_full {
+	background-image: url(../../source/image/bg-card.png);
+	background-repeat:no-repeat;
+	background-size:100% 100%;
+	width: 98%;
+	filter: none;
+	padding: 20px 0px 20px 0px;
+	margin: 0px 20px 20px 20px;
+	text-shadow: none;
+	font-family: "Microsoft YaHei";
+	font-size: 14px;  	
+	outline: none;
+	-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+	box-shadow: none !important;
+	-webkit-border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	border-radius: 0 !important;
+}
+
+.card_title {
+	margin: 0px 20px 20px 20px; 
+	font-family: "Microsoft YaHei";
+	font-size: 20px;
+	font: bold;
+}
+
+.picPreview {
+	height : auto!important;
+	width: auto;
+}
+
+.picPreviewPlaceholder {
+	width : 100px;
+	padding : 10px 10px 10px 10px;
+	border : 2px solid grey;
+	text-align : center;
+}
+ 
+.table-td-align {
+	vertical-align:text-top;
+}
+
+.aCheckbox {
+	margin : 100px 100px 100px 100px;
+}
+
+.close_tag_button {
+	background-image: url(../../source/image/close_tag.png);
+	background-repeat:no-repeat;
+	background-size:100% 100%;
+	width: 30px;
+	height: 30px;
+	filter: none;
+	cursor:pointer;
+}
+
+.close_tag_text {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.keyword_tag_table {
+	border:1px solid #000000;
+	margin: 20px 20px 20px 0px; 
+}

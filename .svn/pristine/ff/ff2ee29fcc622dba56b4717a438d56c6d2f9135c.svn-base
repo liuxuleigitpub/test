@@ -1,0 +1,69 @@
+package com.dm.controller;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dm.entity.UserInfo;
+import com.dm.service.UserInfoService;
+import com.dm.util.PageData;
+
+@Controller
+@RequestMapping("/user")
+public class UserInfoController extends BasicController{
+	
+	@Autowired
+	private UserInfoService userInfoService;
+	
+	@RequestMapping("/userlist")
+	public void userList(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		int pageNum = Integer.parseInt(request.getParameter("page"));
+		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+		PageData<UserInfo> pageData = userInfoService.getUserInfoByPage(pageNum, pageSize);
+		writeJSON(response, pageData.toJSON());
+	}
+	
+	@RequestMapping("/adduserinfo")
+	public void addUserInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String cnname = request.getParameter("cnname");
+		int usertype = Integer.parseInt(request.getParameter("usertype"));
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUsername(username);
+		userInfo.setPassword(password);
+		userInfo.setCnname(cnname);
+		userInfo.setUsertype(usertype);
+		int result = userInfoService.addUserInfo(userInfo);
+		writeInt(response, result);
+	}
+	@RequestMapping("/updateuserinfo")
+	public void updateuserinfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String cnname = request.getParameter("cnname");
+		int usertype = Integer.parseInt(request.getParameter("usertype"));
+		int id = Integer.parseInt(request.getParameter("id"));
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUsername(username);
+		userInfo.setPassword(password);
+		userInfo.setCnname(cnname);
+		userInfo.setUsertype(usertype);
+		userInfo.setId(id);
+		int result = userInfoService.updateUserInfo(userInfo);
+		writeInt(response, result);
+	}
+	@RequestMapping("/deleteUserInfo")
+	public void deleteUserInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		int id = Integer.parseInt(request.getParameter("id"));
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(id);
+		int result = userInfoService.deleteUserInfo(userInfo);
+		writeInt(response, result);
+	}
+}
